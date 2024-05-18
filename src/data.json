@@ -1,0 +1,350 @@
+[{
+    "id": 1,
+    "name": "Laptop",
+    "category": "Electronics",
+    "price": 799.99,
+    "stock": 25
+},
+{
+    "id": 2,
+    "name": "Smartphone",
+    "category": "Electronics",
+    "price": 699.99,
+    "stock": 50
+},
+{
+    "id": 3,
+    "name": "Tablet",
+    "category": "Electronics",
+    "price": 499.99,
+    "stock": 30
+},
+{
+    "id": 4,
+    "name": "Headphones",
+    "category": "Electronics",
+    "price": 199.99,
+    "stock": 100
+},
+{
+    "id": 5,
+    "name": "Smartwatch",
+    "category": "Electronics",
+    "price": 299.99,
+    "stock": 75
+},
+{
+    "id": 6,
+    "name": "Camera",
+    "category": "Electronics",
+    "price": 599.99,
+    "stock": 40
+},
+{
+    "id": 7,
+    "name": "Printer",
+    "category": "Electronics",
+    "price": 149.99,
+    "stock": 20
+},
+{
+    "id": 8,
+    "name": "Keyboard",
+    "category": "Electronics",
+    "price": 49.99,
+    "stock": 150
+},
+{
+    "id": 9,
+    "name": "Mouse",
+    "category": "Electronics",
+    "price": 29.99,
+    "stock": 200
+},
+{
+    "id": 10,
+    "name": "Monitor",
+    "category": "Electronics",
+    "price": 249.99,
+    "stock": 60
+},
+{
+    "id": 11,
+    "name": "Desk Chair",
+    "category": "Furniture",
+    "price": 129.99,
+    "stock": 80
+},
+{
+    "id": 12,
+    "name": "Office Desk",
+    "category": "Furniture",
+    "price": 199.99,
+    "stock": 40
+},
+{
+    "id": 13,
+    "name": "Bookshelf",
+    "category": "Furniture",
+    "price": 99.99,
+    "stock": 50
+},
+{
+    "id": 14,
+    "name": "Bed Frame",
+    "category": "Furniture",
+    "price": 299.99,
+    "stock": 20
+},
+{
+    "id": 15,
+    "name": "Mattress",
+    "category": "Furniture",
+    "price": 399.99,
+    "stock": 30
+},
+{
+    "id": 16,
+    "name": "Dining Table",
+    "category": "Furniture",
+    "price": 499.99,
+    "stock": 15
+},
+{
+    "id": 17,
+    "name": "Dining Chair",
+    "category": "Furniture",
+    "price": 79.99,
+    "stock": 100
+},
+{
+    "id": 18,
+    "name": "Sofa",
+    "category": "Furniture",
+    "price": 699.99,
+    "stock": 10
+},
+{
+    "id": 19,
+    "name": "Coffee Table",
+    "category": "Furniture",
+    "price": 149.99,
+    "stock": 25
+},
+{
+    "id": 20,
+    "name": "TV Stand",
+    "category": "Furniture",
+    "price": 199.99,
+    "stock": 20
+},
+{
+    "id": 21,
+    "name": "Jacket",
+    "category": "Clothing",
+    "price": 89.99,
+    "stock": 120
+},
+{
+    "id": 22,
+    "name": "Jeans",
+    "category": "Clothing",
+    "price": 59.99,
+    "stock": 150
+},
+{
+    "id": 23,
+    "name": "T-shirt",
+    "category": "Clothing",
+    "price": 19.99,
+    "stock": 300
+},
+{
+    "id": 24,
+    "name": "Sneakers",
+    "category": "Clothing",
+    "price": 79.99,
+    "stock": 100
+},
+{
+    "id": 25,
+    "name": "Sweater",
+    "category": "Clothing",
+    "price": 49.99,
+    "stock": 80
+},
+{
+    "id": 26,
+    "name": "Coat",
+    "category": "Clothing",
+    "price": 129.99,
+    "stock": 70
+},
+{
+    "id": 27,
+    "name": "Dress",
+    "category": "Clothing",
+    "price": 69.99,
+    "stock": 90
+},
+{
+    "id": 28,
+    "name": "Hat",
+    "category": "Clothing",
+    "price": 29.99,
+    "stock": 200
+},
+{
+    "id": 29,
+    "name": "Scarf",
+    "category": "Clothing",
+    "price": 19.99,
+    "stock": 150
+},
+{
+    "id": 30,
+    "name": "Gloves",
+    "category": "Clothing",
+    "price": 14.99,
+    "stock": 180
+},
+{
+    "id": 31,
+    "name": "Blender",
+    "category": "Home Appliances",
+    "price": 49.99,
+    "stock": 70
+},
+{
+    "id": 32,
+    "name": "Microwave",
+    "category": "Home Appliances",
+    "price": 99.99,
+    "stock": 40
+},
+{
+    "id": 33,
+    "name": "Toaster",
+    "category": "Home Appliances",
+    "price": 29.99,
+    "stock": 80
+},
+{
+    "id": 34,
+    "name": "Refrigerator",
+    "category": "Home Appliances",
+    "price": 599.99,
+    "stock": 20
+},
+{
+    "id": 35,
+    "name": "Washing Machine",
+    "category": "Home Appliances",
+    "price": 499.99,
+    "stock": 15
+},
+{
+    "id": 36,
+    "name": "Air Conditioner",
+    "category": "Home Appliances",
+    "price": 299.99,
+    "stock": 25
+},
+{
+    "id": 37,
+    "name": "Vacuum Cleaner",
+    "category": "Home Appliances",
+    "price": 199.99,
+    "stock": 50
+},
+{
+    "id": 38,
+    "name": "Dishwasher",
+    "category": "Home Appliances",
+    "price": 399.99,
+    "stock": 10
+},
+{
+    "id": 39,
+    "name": "Oven",
+    "category": "Home Appliances",
+    "price": 499.99,
+    "stock": 15
+},
+{
+    "id": 40,
+    "name": "Coffee Maker",
+    "category": "Home Appliances",
+    "price": 79.99,
+    "stock": 60
+},
+{
+    "id": 41,
+    "name": "Basketball",
+    "category": "Sports",
+    "price": 29.99,
+    "stock": 100
+},
+{
+    "id": 42,
+    "name": "Soccer Ball",
+    "category": "Sports",
+    "price": 24.99,
+    "stock": 120
+},
+{
+    "id": 43,
+    "name": "Tennis Racket",
+    "category": "Sports",
+    "price": 89.99,
+    "stock": 30
+},
+{
+    "id": 44,
+    "name": "Yoga Mat",
+    "category": "Sports",
+    "price": 19.99,
+    "stock": 150
+},
+{
+    "id": 45,
+    "name": "Dumbbells",
+    "category": "Sports",
+    "price": 49.99,
+    "stock": 70
+},
+{
+    "id": 46,
+    "name": "Bicycle",
+    "category": "Sports",
+    "price": 299.99,
+    "stock": 20
+},
+{
+    "id": 47,
+    "name": "Treadmill",
+    "category": "Sports",
+    "price": 499.99,
+    "stock": 10
+},
+{
+    "id": 48,
+    "name": "Golf Clubs",
+    "category": "Sports",
+    "price": 399.99,
+    "stock": 15
+},
+{
+    "id": 49,
+    "name": "Baseball Glove",
+    "category": "Sports",
+    "price": 39.99,
+    "stock": 50
+},
+{
+    "id": 50,
+    "name": "Hiking Boots",
+    "category": "Sports",
+    "price": 79.99,
+    "stock": 40
+}]
