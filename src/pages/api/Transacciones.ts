@@ -1,13 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { ClienteSeguro } from '@/clases';
+
 interface JwtPayload {
-  email: string;
+  user_id: number;
 }
+
 type Data = {
   error?: string;
   message?: string;
-  transacciones?: any[];
+  transacciones?: string;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
@@ -17,50 +19,62 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   const { authorization } = req.headers;
-
+  console.log(authorization)
   if (!authorization) {
     res.status(401).json({ error: 'No autenticado' });
     return;
   }
 
   const token = authorization.split(' ')[1];
-  let decoded;
+  let decoded: JwtPayload;
 
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    console.log(decoded)
   } catch (error) {
     res.status(401).json({ error: 'Token inválido o expirado' });
     return;
   }
 
-  const { type, monto, tipo }: { type?: string; monto?: number; tipo?: string } = req.body;
-
-  if (typeof type !== 'string') {
+  const { typeOpr, monto, tipo, detalles, token_tarjeta, nombre } = req.body;
+  console.log(typeOpr)
+  console.log(monto)
+  console.log(tipo)
+  console.log(detalles)
+  console.log(token_tarjeta)
+  console.log(nombre)
+  if (typeof typeOpr !== 'string') {
     res.status(400).json({ error: 'Parámetros de consulta inválidos' });
     return;
   }
 
-  if (type === 'transaccion') {
-    const user = await ClienteSeguro.obtenerUsuarioPorCorreo(decoded.email);
+  const user = await ClienteSeguro.obtenerUsuarioPorId(decoded.user_id);
+  console.log(user)
+  if (!user) {
+    res.status(404).json({ error: 'Usuario no encontrado' });
+    return;
+  }
 
-    if (user) {
-      if (typeof monto === 'number' && typeof tipo === 'string') {
-        await user.realizarTransaccion(monto, tipo);
+  if (typeOpr === 'transaccion') {
+    if (typeof monto === 'number' && typeof tipo === 'string' && typeof token_tarjeta === 'string' && typeof nombre === 'string') {
+      try {
+        await user.realizarTransaccion(monto, tipo, JSON.stringify(detalles), token_tarjeta,nombre);
         res.status(200).json({ message: 'Transacción realizada exitosamente' });
-      } else {
-        res.status(400).json({ error: 'Parámetros de transacción inválidos' });
+      } catch (error) {
+        console.error('Error al realizar la transacción:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
       }
     } else {
-      res.status(404).json({ error: 'Usuario no encontrado' });
+      res.status(400).json({ error: 'Parámetros de transacción inválidos' });
     }
-  } else if (type === 'obtener_transacciones') {
-    const user = await ClienteSeguro.obtenerUsuarioPorCorreo(decoded.email);
-
-    if (user) {
+  } else if (typeOpr === 'obtener_transacciones') {
+    try {
       const transacciones = await ClienteSeguro.obtenerTransacciones(user.getId());
-      res.status(200).json({ message: 'Transacciones obtenidas exitosamente', transacciones });
-    } else {
-      res.status(404).json({ error: 'Usuario no encontrado' });
+      console.log(transacciones)
+      res.status(200).json({ message: 'Transacciones obtenidas exitosamente', transacciones: JSON.stringify(transacciones) });
+    } catch (error) {
+      console.error('Error al obtener las transacciones:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
     }
   } else {
     res.status(400).json({ error: 'Tipo de acción no soportado' });

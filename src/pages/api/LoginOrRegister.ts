@@ -1,8 +1,8 @@
 import { ClienteSeguro } from "@/clases";
 import { UserLogin, UserRegister } from "@/types";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse, GetServerSideProps } from "next";
 import jwt from 'jsonwebtoken';
-
+import cookie from "cookie";
 type Params = {
   type?: string;
   userDataString?: string;
@@ -12,6 +12,8 @@ type Data = {
   error?: string;
   message?: string;
   authenticated?: boolean;
+  token?:string;
+  user_id?:number
 };
 
 export default async function handler(
@@ -38,9 +40,14 @@ export default async function handler(
         const isAuthenticated = await user.verificarPassword(password);
         console.log(isAuthenticated)
         if (isAuthenticated) {
-          const token = jwt.sign({ email: correo }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+          const token = jwt.sign({ user_id: user.getId() }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+          res.setHeader('Set-Cookie', cookie.serialize('token', token,{
+            maxAge: 60*60,
+            path: "/",
+            secure: true
+          }))
           console.log(token)
-          res.status(200).json({ message: "Autenticación exitosa", authenticated: true });
+          res.status(200).json({ message: "Autenticación exitosa", authenticated: true, token, user_id:user.getId() });
         } else {
           res.status(401).json({ error: "Contraseña incorrecta" });
         }
@@ -63,7 +70,9 @@ export default async function handler(
         const newUser = new ClienteSeguro(nombre, correo, password);
         await newUser.encriptarPassword();
         await newUser.guardarEnBaseDeDatos();
-        res.status(201).json({ message: "Cuenta creada exitosamente", authenticated: true });
+        const token = jwt.sign({ user_id: newUser.getId() }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+
+        res.status(201).json({ message: "Cuenta creada exitosamente", authenticated: true, token, user_id:newUser.getId() });
       }
     } else {
       console.log(4)

@@ -15,12 +15,14 @@ function ShoppingCart() {
         {
             products.map((product:Product)=>(
                 <article key={product.id} className=' p-1 my-1 border border-white'>
-                    <h1>{product.name}</h1>
+                    <h1>{product.title}</h1>
                     <p>{product.price}</p>
                 </article>
             ))
         }
-        <button onClick={handleClick}>Pagar</button>
+        {products.length>=1? (<button className=' mt-3 py-1 px-3 rounded bg-[#666666] hover:bg-[#666666]/70' onClick={handleClick}>Pagar ahora</button>):(
+            <p className='flex justify-center text-xl font-semibold'>Tu carrito esta vacío</p>
+        )}
     </section>
   )
 }

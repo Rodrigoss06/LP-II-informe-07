@@ -3,6 +3,30 @@
 @tailwind utilities;
 
 body {
-  color: white
+  background-color: black;
+  color: white;
 }
+
+.background-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-image: linear-gradient(to right, #4f4f4f2e 1px, transparent 1px),
+                    linear-gradient(to bottom, #8080800a 1px, transparent 1px);
+  background-size: 14px 24px;
+}
+
+.radial-gradient-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10%;
+  height: 1000px;
+  width: 1000px;
+  border-radius: 50%;
+  background-image: radial-gradient(circle 400px at 50% 300px, #fbfbfb36, #000);
+}
+
 

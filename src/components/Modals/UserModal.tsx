@@ -6,7 +6,7 @@ interface ModalProps {
     children: React.ReactNode;
 }
 
-const LoginModal: React.FC<ModalProps> = ({ show, onClose,  children }) => {
+const UserCartModal: React.FC<ModalProps> = ({ show, onClose,  children }) => {
     if (!show) {
         return null;
     }
@@ -19,11 +19,11 @@ const LoginModal: React.FC<ModalProps> = ({ show, onClose,  children }) => {
                     {children}
                 </div>
                 <div className="flex justify-center border-t-2 border-white pt-3 mb-[-6px]">
-                    <button className='bg-red-600 rounded p-1 text-lg' onClick={onClose}>Close</button>
+                    <button className='bg-red-600 rounded py-1 px-2 text-lg hover:bg-red-500' onClick={onClose}>Close</button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default LoginModal;
+export default UserCartModal;

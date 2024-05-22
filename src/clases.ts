@@ -44,9 +44,9 @@ export class ClienteSeguro extends Cliente {
   async encriptarPassword(): Promise<void> {
     try {
       this.password = await bcrypt.hash(this.password, 10);
-    this.encriptado = true;
+      this.encriptado = true;
     } catch (error) {
-      console.log(error)
+      console.error('Error al encriptar la contraseña:', error);
     }
   }
 
@@ -62,7 +62,7 @@ export class ClienteSeguro extends Cliente {
       );
       this.id = result.id;
     } catch (error) {
-      console.log(error)
+      console.error('Error al guardar en la base de datos:', error);
     }
   }
 
@@ -74,22 +74,40 @@ export class ClienteSeguro extends Cliente {
       }
       return null;
     } catch (error) {
-      console.log(error)
-      return null
+      console.error('Error al obtener usuario por correo:', error);
+      return null;
+    }
+  }
+  static async obtenerUsuarioPorId(id: number): Promise<ClienteSeguro | null> {
+    try {
+      const result = await db.oneOrNone('SELECT * FROM usuarios WHERE id = $1', [id]);
+      if (result) {
+        return new ClienteSeguro(result.nombre,result.correo, result.password_hash,result.id, );
+      }
+      return null;
+    } catch (error) {
+      console.error('Error al obtener usuario por id:', error);
+      return null;
     }
   }
 
-  async realizarTransaccion(monto: number, tipo: string): Promise<void> {
+  async realizarTransaccion(monto: number, tipo: string, detalles: any, tokenTarjeta: string,nombre:string): Promise<void> {
     if (!this.id) throw new Error('Usuario no guardado en la base de datos');
-    await db.none(
-      'INSERT INTO transacciones (usuario_id, monto, tipo) VALUES ($1, $2, $3)',
-      [this.id, monto, tipo]
-    );
+    try {
+      const transaccion = new Transaccion(this.id, monto, tipo, detalles, tokenTarjeta,nombre);
+      await transaccion.guardarEnBaseDeDatos();
+    } catch (error) {
+      console.error('Error al realizar transacción:', error);
+    }
   }
 
-  static async obtenerTransacciones(usuarioId: number): Promise<any[]> {
-    const result = await db.any('SELECT * FROM transacciones WHERE usuario_id = $1', [usuarioId]);
-    return result;
+  static async obtenerTransacciones(usuarioId: number): Promise<Transaccion[]> {
+    try {
+      return await Transaccion.obtenerTransaccionesPorUsuario(usuarioId);
+    } catch (error) {
+      console.error('Error al obtener transacciones:', error);
+      return [];
+    }
   }
 
   getNombre(): string {
@@ -98,5 +116,46 @@ export class ClienteSeguro extends Cliente {
 
   getId(): number {
     return this.id!;
+  }
+  
+  getCorreo(): string {
+    return this.correo!;
+  }
+}
+
+export class Transaccion {
+  private id?: number;
+  private usuario_id: number;
+  private monto: number;
+  private tipo: string;
+  private detalles: any;
+  private token_tarjeta: string;
+  private nombre: string; // Añadido
+  private fecha?: string
+
+  constructor(usuario_id: number, monto: number, tipo: string, detalles: any, token_tarjeta: string, nombre: string,fecha?:string) {
+    this.usuario_id = usuario_id;
+    this.monto = monto;
+    this.tipo = tipo;
+    this.detalles = detalles;
+    this.token_tarjeta = token_tarjeta;
+    this.nombre = nombre; // Añadido
+    if (fecha) {
+      this.fecha = fecha
+    }
+  }
+
+  
+  async guardarEnBaseDeDatos(): Promise<void> {
+    const result = await db.one(
+      'INSERT INTO transacciones (usuario_id, monto, tipo, detalles, token_tarjeta, nombre_tarjeta) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+      [this.usuario_id, this.monto, this.tipo, this.detalles, this.token_tarjeta, this.nombre] // Modificado
+    );
+    this.id = result.id;
+  }
+
+  static async obtenerTransaccionesPorUsuario(usuario_id: number): Promise<Transaccion[]> {
+    const result = await db.any('SELECT * FROM transacciones WHERE usuario_id = $1', [usuario_id]);
+    return result.map((row: any) => new Transaccion(row.usuario_id, row.monto, row.tipo, row.detalles, row.token_tarjeta, row.nombre, row.created_at)); // Modificado
   }
 }

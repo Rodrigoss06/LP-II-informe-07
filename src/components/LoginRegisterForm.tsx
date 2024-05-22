@@ -1,7 +1,7 @@
 import { useUserStore } from "@/UserStore";
 import { UserLogin, UserRegister } from "@/types";
 import axios from "axios";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 function LoginRegisterForm() {
   const [registerOrLogin, setRegisterOrLogin] = useState("login");
@@ -14,21 +14,24 @@ function LoginRegisterForm() {
     correo: "",
     password: "",
   });
-  const {setLoggin} = useUserStore((state)=>state)
+
+  const {setLoggin,setUser_id} = useUserStore((state)=>state)
   const handleSubmit = async(e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (registerOrLogin === "login") {
-      console.log(registerOrLogin)
-      console.log(userLogin)
       const response = await axios.get("api/LoginOrRegister", {
         params: {
           type: registerOrLogin,
           userDataString: JSON.stringify(userLogin),
         },
       });
-      console.log(response.data.message)
-      console.log(response.data.authenticated)
-      setLoggin(response.data.authenticated)
+      if (response.data.authenticated) {
+        const {token,user_id} = response.data
+        alert(response.data.message)
+        setLoggin(token)
+        setUser_id(token)
+        setUserLogin({ correo: "", password: "" });
+      }
     } else if (registerOrLogin === "crear_cuenta") {
       const response = await axios.get("api/LoginOrRegister", {
         params: {
@@ -36,10 +39,12 @@ function LoginRegisterForm() {
           userDataString: JSON.stringify(userRegister),
         },
       });
-      console.log(response.data.message)
-      console.log(response.data.authenticated)
-
+      if (response.data.authenticated) {
+        alert(response.data.message)
+        setUserRegister({ nombre: "", correo: "", password: "" });
+      }
     }
+
   };
   return (
     <section>
@@ -64,6 +69,7 @@ function LoginRegisterForm() {
             type="email"
             placeholder="Correo"
             required
+            value={userLogin.correo}
             onChange={(e) =>
               setUserLogin((state) => ({ ...state, correo: e.target.value }))
             }
@@ -73,6 +79,7 @@ function LoginRegisterForm() {
             type="password"
             placeholder="Contraseña"
             required
+            value={userLogin.password}
             onChange={(e) =>
               setUserLogin((state) => ({ ...state, password: e.target.value }))
             }
@@ -86,6 +93,7 @@ function LoginRegisterForm() {
             type="text"
             placeholder="Nombre"
             required
+            value={userRegister.nombre}
             onChange={(e) =>
               setUserRegister((state) => ({ ...state, nombre: e.target.value }))
             }
@@ -95,6 +103,7 @@ function LoginRegisterForm() {
             type="text"
             placeholder="Correo"
             required
+            value={userRegister.correo}
             onChange={(e) =>
               setUserRegister((state) => ({ ...state, correo: e.target.value }))
             }
@@ -104,6 +113,7 @@ function LoginRegisterForm() {
             type="password"
             placeholder="Contraseña"
             required
+            value={userRegister.password}
             onChange={(e) =>
               setUserRegister((state) => ({
                 ...state,

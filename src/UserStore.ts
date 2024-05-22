@@ -1,40 +1,70 @@
 import { create } from "zustand"; 
 import { Product } from "./types";
+import { getUserIdFromToken } from "./authUtils";
 
 
-interface Store {
+interface StoreUser {
     loggin: boolean,
-    user_id:string,
-    setLoggin:(loggin:boolean)=>void,
+    user_id:number,
+    setLoggin:(loggin:string)=>void,
     setUser_id:(user_id:string)=>void
 }
-export const useUserStore= create<Store>((set) =>({
+export const useUserStore= create<StoreUser>((set) =>({
     loggin: false,
-    user_id: "0",
-    setLoggin:(loggin:boolean)=>set({loggin}),
-    setUser_id:(user_id:string)=>set({user_id})
+    user_id: 0,
+    setLoggin:(token:string)=>{
+        if (token) {
+            const user_id = getUserIdFromToken(token)
+            if (user_id) {
+                set({loggin:true})
+                return
+            }
+        }
+        return
+    },
+    setUser_id:(token:string)=>{
+        if (token) {
+            const user_id = getUserIdFromToken(token)
+            if (user_id) {
+                set({user_id})
+                return
+            }
+        }
+        return
+    },
 }))
 
 interface StoreProducts {
     products: Product[],
-    setproducts:(product:Product)=>void
+    setProducts:(product:Product)=>void,
+    emptyShoppingCart:()=>void
 }
 export const useProductsStore= create<StoreProducts>((set) =>({
     products: [],
-    setproducts:(product:Product)=>set((state) => ({
+    setProducts:(product:Product)=>set((state) => ({
         products: [...state.products, product]
-    }))
+    })),
+    emptyShoppingCart: ()=>set({products:[]})
 }))
 
 interface ModalBorrar {
     showModalCart: boolean,
     showModalPay: boolean,
+    showModalLogin: boolean,
+    showModalUser: boolean,
     setShowModalCart:(showModalCart:boolean)=>void
     setShowModalPay:(showModalPay:boolean)=>void
+    setShowModalLogin:(showModalLogin:boolean)=>void
+    setShowModalUser:(showModalUser:boolean)=>void
 }
 export const useModalBorrar= create<ModalBorrar>((set) =>({
     showModalCart: false,
     showModalPay: false,
+    showModalLogin: false,
+    showModalUser: false,
     setShowModalCart:(showModalCart:boolean)=>set({showModalCart}),
-    setShowModalPay:(showModalPay:boolean)=>set({showModalPay})
+    setShowModalPay:(showModalPay:boolean)=>set({showModalPay}),
+    setShowModalLogin:(showModalLogin:boolean)=>set({showModalLogin}),
+    setShowModalUser:(showModalUser:boolean)=>set({showModalUser}),
+
 }))
